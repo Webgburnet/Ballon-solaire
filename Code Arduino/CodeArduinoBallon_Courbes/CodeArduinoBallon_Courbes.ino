@@ -1,0 +1,63 @@
+// Ce code permet de visualiser en direct les données des capteurs sur des courbes actualisées automatiquement
+// Ce code est à utiliser au sol mais pas en vol (pas d'enregistrement des données)
+// Pour l'enregistrement des données, utiliser le code du dossier "CodeArduinoBallon"
+
+// Pour l'utiliser, il faut brancher convenablement les capteurs (pas besoin du lecteur de carte microSD, ni de la pile)
+// Connecter l'arduino à l'ordinateur par USB, "Vérifier" puis "Téléverser"
+// Aller dans "Outils" puis "Moniteur série", et les courbes commencent à s'afficher
+
+// Pour plus de clarté, nous conseillons de choisir une seule variable à afficher à la fois (problème d'échelle)
+// Pour cela, décommenter en bas de cette page le bloc correspondant à la variable souhaitée (la température dans l'exemple ici) 
+
+#include "Wire.h" // charge la librairie pour communiquer avec le bus I2C
+#include "Adafruit_BMP280.h" // charge la librairie du capteur de pression
+
+Adafruit_BMP280 mySensor ; // crée l'objet senseur appelé mySensor
+int delaiAquisition = 100; // délai d'aquisition des données en millisecondes (ms), choisir un délai adapté à l'affichage (entre 10ms et 1s)
+unsigned long temps; // variable pour stocker le temps de vol en secondes (s)
+float temperature; // variable pour stocker la température en degrés Celcius (°C)
+float pression; // variable pour stocker la pression en Pascal (Pa)
+float altitude; // variable pour stocker l'altitude en mètres (m)
+int niveauCO2 = 0; // variable pour stocker le niveau de CO2 (sans unité)
+
+// Initialisation
+void setup() {
+  Serial.begin(9600); // turn on serial monitor
+  if (!mySensor.begin()) {  // initialiser le capteur de pression
+    Serial.println("Verifiez les branchements du capteur de pression BMP280 !");
+    while (1);
+  } 
+}
+
+// Boucle
+void loop() {
+  temperature = mySensor.readTemperature(); // lire la température depuis BMP180
+  pression = mySensor.readPressure(); // lire la pression
+  altitude = mySensor.readAltitude(1013); // lire l'altitude
+  niveauCO2 = analogRead(0); // lire le niveau de CO2
+
+  // Choisir les paramètres à afficher en commentant/décommentant les blocs suivants.
+  // Pour commenter, utiliser "//" ou bien sélectionner le bloc puis "clic droit -> Commenter/Décommenter"
+
+  // Affichage du niveau de CO2 :
+  Serial.print("niveau CO2 : " );                       
+  Serial.println(niveauCO2);  
+  Serial.println(" ");  
+
+  // Affichage de la température :
+  Serial.print(F("Temperature : ")); 
+  Serial.print(temperature);
+  Serial.println(" degres Celsius");
+
+  // Affichage de la pression :
+  Serial.print("Pression : " );
+  Serial.print(pression);
+  Serial.println(" Pascal");
+
+  // Affichage de l'altitude :
+  Serial.print("Altitude : " );
+  Serial.print(altitude);
+  Serial.println(" m"); 
+
+  delay(delaiAquisition); 
+}
