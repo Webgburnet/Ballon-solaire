@@ -2,17 +2,22 @@
 
 ## Composants
 
-### Arduino_Uno
-![Arduino_Uno]()
+* Carte Arduino_Uno
+* Capteur Adafruit_BMP280
+* Capteur MQ135
+* Lecteur carte microSD
+* Connecteur Pile 9V
+* 8 cables Male-Femelle
+* 5 cables Femelle-Femelle
 
 ## Branchement
-![Fritzing]()
+![Fritzing](/Cablage/Untitled_Sketch.png)
 
 ### Shield
 * NC
 
 ### Analogique
-* A0: capteur CO2
+* A0: capteur Gaz
 * A1: NC
 * A2: NC
 * A3: NC
@@ -41,11 +46,18 @@
 
 ### Alimentation
 * Vin : NC
-* GND : Adafruit_BMP280 ; CO2
-* 5V : Adafruit_BMP280 ; CO2
-* 3.3V : NC
+* GND : Adafruit_BMP280 ; capteur Gaz
+* 5V : capteur Gaz
+* 3.3V : Adafruit_BMP280
 * Vref : NC
 
 ### Divers 
 * Ioref : NC
 * Reset : NC
+
+### ISP
+* SCK : carte SD
+* MOSI : carte SD
+* MISO : carte SD
+* VCC : carte SD
+* GND : carte SD
